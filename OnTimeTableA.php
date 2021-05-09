@@ -1,6 +1,7 @@
 <?php
 trait TableA{	
 	function CrtFtrTbl($feature='table'){
+		$this->VldClr();	
 		if ($this->ot_can('create','table') and $this->ot_can('create',$feature)) {
 			if ($this->ot_exist($feature)){
 				if ($this->not_exist('index.tas',$feature)){
@@ -10,15 +11,16 @@ trait TableA{
 				}
 			}
 		}
-		$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $this->retval );
+		$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $this->errvalid );
 		return $this->retval;
 	}
 	function CrtTblIn($table, $desc, $recname ='same' , $feature='table')
 	{
+		$this->VldClr();	
 		if ($this->ot_can('change','table') and $this->ot_can('change',$feature)) {
    			$tmp = $this->ot_readif('index.tas',$feature);
 			if ($this->not_in($table,$tmp) ){
-				if ($recname=='same') {
+				if ( $recname == 'same' ) {
 					$recname=$table;
 				}
 				if ($this->ot_exist($recname.'.rcd','record')) {
@@ -33,11 +35,12 @@ trait TableA{
 				}
 			}
 		}
-		$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $this->retval );
+		$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $this->errvalid );
 		return $this->retval;
 	}	
 	function RmvTblIn($table,  $feature='table')
 	{
+		$this->VldClr();	
 		if ($this->ot_can('change','table') and $this->ot_can('change',$feature)) {
 			$tmp = $this->ot_readif('index.tas',$feature);
 			if ($this->ot_in($table,$tmp) ) {
@@ -54,33 +57,36 @@ trait TableA{
 				}
 			}
 		}
-		$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $this->retval );
+		$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $this->errvalid );
 		return $this->retval;
 	}
 	function AnnInAdd($code, $kind='b', $feature='basic')
 	{
+		$this->VldClr();	
 		$safety= $this->ot_safety_level($code,$kind,$feature);
 		if ($this->ot_level($safety,"create")) {
 			if ($this->not_exist($code.'.'.$kind.'an',$feature)) {
 				$this->ot_addin($this->id,'owner',$code.'.'.$kind.'an',$feature);
 			}
 		}
-		$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $this->retval );
+		$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $this->errvalid );
 		return $this->retval;
 	}
 	function AnnInRmv($code, $kind='b', $feature='basic')
 	{
+		$this->VldClr();	
 		$safety= $this->ot_safety_level($code,$kind,$feature);
 		if ($this->ot_level($safety,"remove")) {
 			if ($this->ot_exist($code.'.'.$kind.'an',$feature)) {
 				$this->ot_deleteinside($code.'.'.$kind.'an',$feature);
 			}
 		}
-		$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $this->retval );
+		$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $this->errvalid );
 		return $this->retval;
 	}
 	function PblInAdd($code, $kind='b', $feature='basic')
 	{
+		$this->VldClr();	
 		$safety= $this->ot_safety_level($code,$kind,$feature);
 		if ($this->ot_level($safety,"create")) {
 			if ($this->not_exist($code.'.ban',$feature,"C0010M038")) {
@@ -89,22 +95,24 @@ trait TableA{
 				}
 			}
 		}
-		$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $this->retval );
+		$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $this->errvalid );
 		return $this->retval;
 	}
 	function PblInRmv($code, $kind='b', $feature='basic')
 	{
+		$this->VldClr();	
 		$safety= $this->ot_safety_level($code,$kind,$feature);
 		if ($this->ot_level($safety,"remove")) {
 			if ($this->ot_exist($code.'.'.$kind.'pl',$feature)) {
 				$this->ot_deleteinside($code.'.'.$kind.'pl',$feature);
 			}
 		}
-		$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $this->retval );
+		$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $this->errvalid );
 		return $this->retval;
 	}
 	function UsrInAdd($code, $user, $level , $kind='b', $feature='basic')
 	{
+		$this->VldClr();	
 		$safety= $this->ot_safety_level($code,$kind,$feature);
 		if ($this->ot_level($safety,"create")) {
 			if ($this->ot_exist($user,'usr')) {
@@ -116,11 +124,12 @@ trait TableA{
 				}
 			}
 		}
-		$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $this->retval );
+		$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $this->errvalid );
 		return $this->retval;
 	}
 	function GrpInAdd($code, $group, $level , $kind='b', $feature='basic')
 	{
+		$this->VldClr();	
 		if ($this->ot_feature('grp')) {
 			$safety= $this->ot_safety_level($code,$kind,$feature);
 			if ($this->ot_level($safety,"create")) {
@@ -134,11 +143,12 @@ trait TableA{
 				}
 			}
 		}
-		$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $this->retval );
+		$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $this->errvalid );
 		return $this->retval;
 	}
 	function UsrInChg($code, $user, $level , $kind='b', $feature='basic')
 	{
+		$this->VldClr();	
 		$safety= $this->ot_safety_level($code,$kind,$feature);
 		if ($this->ot_level($safety,"change")) {
 			if ($this->ot_exist($user,'usr')) {
@@ -150,11 +160,12 @@ trait TableA{
 				}
 			}
 		}
-		$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $this->retval );
+		$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $this->errvalid );
 		return $this->retval;
 	}
 	function GrpInChg($code, $group, $level , $kind='b', $feature='basic')
 	{
+		$this->VldClr();	
 		if ($this->ot_feature('grp')) {
 			$safety= $this->ot_safety_level($code,$kind,$feature);
 			if ($this->ot_level($safety,"create")) {
@@ -168,11 +179,12 @@ trait TableA{
 				}
 			}
 		}
-		$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $this->retval );
+		$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $this->errvalid );
 		return $this->retval;
 	}
 	function UsrInDlt($code, $user, $kind='b', $feature='basic')
 	{
+		$this->VldClr();	
 		$safety= $this->ot_safety_level($code,$kind,$feature);
 		if ($this->ot_level($safety,"remove")) {
 			if ($this->ot_exist($user,'usr')) {
@@ -182,11 +194,12 @@ trait TableA{
 				}
 			}
 		}
-		$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $this->retval );
+		$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $this->errvalid );
 		return $this->retval;
 	}
 	function GrpInDlt($code, $group, $level , $kind='b', $feature='basic')
 	{
+		$this->VldClr();	
 		if ($this->ot_feature('grp')) {
 			$safety= $this->ot_safety_level($code,$kind,$feature);
 			if ($this->ot_level($safety,"remove")) {
@@ -198,7 +211,7 @@ trait TableA{
 				}
 			}
 		}
-		$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $this->retval );
+		$this->ot_log( __METHOD__ , __FUNCTION__ , func_get_args() , $this->errvalid );
 		return $this->retval;
 	}
 }
